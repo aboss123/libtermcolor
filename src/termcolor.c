@@ -165,6 +165,10 @@ int tcol_color_parse(char* dst, size_t dstn, char color[16], size_t k,
         if (j >= dstn) return TermColorErrorNone;
     }
 
+    if (dst[j] == ';') {
+        j--;
+    }
+
     // Graphics mode escape sequences end with 'm'
     __APPEND('m');
 
