@@ -32,3 +32,23 @@ if (result != TermColorErrorNone) {
 ```
 
 ![Hello world in bold rainbow text](img/hello-world.png)
+
+## Building
+
+First, clone the repo and move in it
+
+```sh
+git clone https://github.com/euppal/libtermcolor
+cd libtermcolor
+```
+
+
+To build libtermcolor, use
+
+```
+make
+```
+
+this will build the static and dynamic libraries, along with a test program (called demo).
+
+you can build the static library using make static and the dynamic one with `make dynamic` and `make static`
