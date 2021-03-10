@@ -239,6 +239,7 @@ static inline int tcol_fmt_parse(char* dst, size_t dstn, const char* src,
         }
     }
     dst[dstn] = 0;
+    dst[j] = 0;
     return TermColorErrorNone;
 }
 
