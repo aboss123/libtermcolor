@@ -41,4 +41,4 @@ Example  | Description
 
 ### Complete Syntax
 
-The full syntax for colors can be found in [`syntax.ebnf`](doc/syntax.ebnf).
+The full syntax for colors can be found in [`syntax.ebnf`](syntax.ebnf).
