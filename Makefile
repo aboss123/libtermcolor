@@ -9,14 +9,13 @@ ifeq ($(shell uname), Darwin)
 AR = /usr/bin/libtool
 AR_OPT = -static $^ -o $@
 else
-ifneq ($(shell uname), Linux)
-LDFLAGS += -Wl,--enable-auto-import -Wl,--export-all-symbols -Wl,--out-implib=lib$${PRG}.dll.a
-endif
 AR = ar
 AR_OPT = rcs $@ $^
 endif
 
-
+ifneq (${BUILD_ON_WINDOWS), 1)
+LDFLAGS += -Wl,--enable-auto-import -Wl,--export-all-symbols -Wl,--out-implib=lib${PRG}.dll.a
+endif
 
 CFLAGS += ${WARNINGS}
 
@@ -31,7 +30,6 @@ ${PRG}.a: ${OBJ}
 	${AR} ${AR_OPT}
 
 ${PRG}.so: ${OBJ}
-	echo ${SRC}
 	${CC} -shared $< -o $@
 
 demo: ${PRG}.a
