@@ -9,9 +9,14 @@ ifeq ($(shell uname), Darwin)
 AR = /usr/bin/libtool
 AR_OPT = -static $^ -o $@
 else
+ifneq ($(shell uname), Linux)
+LDFLAGS += -Wl,--enable-auto-import -Wl,--export-all-symbols -Wl,--out-implib=lib$${PRG}.dll.a
+endif
 AR = ar
 AR_OPT = rcs $@ $^
 endif
+
+
 
 CFLAGS += ${WARNINGS}
 
