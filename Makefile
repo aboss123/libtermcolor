@@ -1,7 +1,11 @@
 CFLAGS   += -Isrc -fPIC
 WARNINGS += -Wall -Wextra
 
+ifneq( ${BUILD_ON_WINDOWS}, 1)
 SRC      := $(shell find src -type f -name '*.c')
+else
+SRC      := $(shell dir src *.c /b/s)
+endif
 OBJ      := ${SRC:.c=.o}
 PRG      := libtermcolor
 
@@ -15,10 +19,9 @@ endif
 
 CFLAGS += ${WARNINGS}
 
-all: dynamic demo
+all: static dynamic demo
 
 .PHONY:  static dynamic
-.PHONY:  static
 static:  ${PRG}.a
 dynamic: ${PRG}.so
 
