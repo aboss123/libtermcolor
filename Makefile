@@ -14,7 +14,8 @@ AR_OPT = rcs $@ $^
 endif
 
 ifeq (${BUILD_ON_WINDOWS}, 1)
-LDFLAGS += -static -Wl,--enable-auto-import -Wl,--export-all-symbols -Wl,--out-implib=lib${PRG}.dll.a
+CFLAGS  += -Wl,--export-all-symbols
+LDFLAGS += -static -Wl,--export-all-symbols -Wl,--out-implib=lib${PRG}.dll.a
 endif
 
 CFLAGS += ${WARNINGS}
