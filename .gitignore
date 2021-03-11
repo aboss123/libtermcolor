@@ -2,3 +2,7 @@
 debug/main
 debug/main.dSYM/Contents/Resources/DWARF/main
 debug/main.dSYM/Contents/Info.plist
+*.o
+*.so
+*.a
+demo

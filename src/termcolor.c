@@ -60,10 +60,13 @@ int _termcolor_internal_lookup(const char color_name) {
     }
 }
 
-int tcol_color_parse(char* dst, size_t dstn, char color[16], size_t k,
-                     size_t* len) {
+int _tcol_color_generate(char* dst, size_t dstn, size_t* len,
+                         enum _termcolor_internal_color rep, int foreground,
+                         int background) {
     // Much of the code here was informed by the following gist:
     // https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
+
+    size_t j = 0;
 
     // This macro checks to make sure we don't overrun the buffer when we add
     // a new character,
@@ -73,12 +76,65 @@ int tcol_color_parse(char* dst, size_t dstn, char color[16], size_t k,
     } while (0)
 
     // Every escape code begans with "\e["
-    size_t j = 0;
     __APPEND('\e');
     __APPEND('[');
 
+    // Add the appropriate parameters to our escape sequence depending on the
+    // flags set in rep(resentation).
+    if (rep & _termcolor_internal_color_BOLD) {
+        __APPEND('1');
+        __APPEND(';');
+    }
+    if (rep & _termcolor_internal_color_FANT) {
+        __APPEND('2');
+        __APPEND(';');
+    }
+    if (rep & _termcolor_internal_color_ITLC) {
+        __APPEND('3');
+        __APPEND(';');
+    }
+    if (rep & _termcolor_internal_color_UNDR) {
+        __APPEND('4');
+        __APPEND(';');
+    }
+    if (rep & _termcolor_internal_color_BLNK) {
+        __APPEND('5');
+        __APPEND(';');
+    }
+    if (rep & _termcolor_internal_color_STRK) {
+        __APPEND('9');
+        __APPEND(';');
+    }
+
+    // If foreground and background colors were provided, snprintf them to dst.
+    if (foreground != -1) {
+        j += snprintf(dst + j, dstn - j, "%d;", foreground);
+        if (j >= dstn) return TermColorErrorNone;
+    }
+    if (background != -1) {
+        j += snprintf(dst + j, dstn - j, "%d;", background + 10);
+        if (j >= dstn) return TermColorErrorNone;
+    }
+
+    if (dst[j - 1] == ';') {
+        j--;
+    }
+
+    // Graphics mode escape sequences end with 'm'
+    __APPEND('m');
+
+    *len = j;
+    return TermColorErrorNone;
+}
+
+int tcol_color_parse(char* dst, size_t dstn, char color[16], size_t k,
+                     size_t* len) {
+
     // '0' signifies no color, i.e. a reset
     if (*color == '0' && k == 1) {
+        size_t j = 0;
+        __APPEND('\e');
+        __APPEND('[');
         __APPEND('m');
         *len = j;
         return TermColorErrorNone;
@@ -128,52 +184,7 @@ int tcol_color_parse(char* dst, size_t dstn, char color[16], size_t k,
         }
     }
 
-    // Add the appropriate parameters to our escape sequence depending on the
-    // flags set in rep(resentation).
-    if (rep & _termcolor_internal_color_BOLD) {
-        __APPEND('1');
-        __APPEND(';');
-    }
-    if (rep & _termcolor_internal_color_FANT) {
-        __APPEND('2');
-        __APPEND(';');
-    }
-    if (rep & _termcolor_internal_color_ITLC) {
-        __APPEND('3');
-        __APPEND(';');
-    }
-    if (rep & _termcolor_internal_color_UNDR) {
-        __APPEND('4');
-        __APPEND(';');
-    }
-    if (rep & _termcolor_internal_color_BLNK) {
-        __APPEND('5');
-        __APPEND(';');
-    }
-    if (rep & _termcolor_internal_color_STRK) {
-        __APPEND('9');
-        __APPEND(';');
-    }
-
-    // If foreground and background colors were provided, snprintf them to dst.
-    if (foreground != -1) {
-        j += snprintf(dst + j, dstn - j, "%d;", foreground);
-        if (j >= dstn) return TermColorErrorNone;
-    }
-    if (background != -1) {
-        j += snprintf(dst + j, dstn - j, "%d;", background + 10);
-        if (j >= dstn) return TermColorErrorNone;
-    }
-
-    if (dst[j - 1] == ';') {
-        j--;
-    }
-
-    // Graphics mode escape sequences end with 'm'
-    __APPEND('m');
-
-    *len = j;
-    return TermColorErrorNone;
+    return _tcol_color_generate(dst, dstn, len, rep, foreground, background);
 }
 
 static inline int tcol_fmt_parse(char* dst, size_t dstn, const char* src,
