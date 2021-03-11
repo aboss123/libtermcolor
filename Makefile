@@ -1,7 +1,7 @@
 CFLAGS   += -Isrc -fPIC
 WARNINGS += -Wall -Wextra
 
-ifneq( ${BUILD_ON_WINDOWS}, 1)
+ifneq ( ${BUILD_ON_WINDOWS}, 1)
 SRC      := $(shell find src -type f -name '*.c')
 else
 SRC      := $(shell dir src *.c /b/s)
