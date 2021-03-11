@@ -14,7 +14,7 @@ AR_OPT = rcs $@ $^
 endif
 
 ifeq (${BUILD_ON_WINDOWS}, 1)
-$(info building libtermcolor on windows
+$(info building libtermcolor on windows)
 CFLAGS  += -Wl,--export-all-symbols
 LDFLAGS += -static -Wl,--export-all-symbols -Wl,--out-implib=lib${PRG}.dll.a
 endif
