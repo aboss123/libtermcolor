@@ -258,7 +258,7 @@ static int tcol_vfprintf(FILE* stream, const char* fmt, va_list ap) {
     // Gets the length of the format string and calculates a length for the new
     // format string to be created.
     const size_t l = strlen(fmt);
-    const size_t n = l * 2 + 1;
+    const size_t n = l * 2 + 16;
 
     // Allocates and produces the new format string.
     char* buffer = malloc(n);
