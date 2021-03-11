@@ -13,7 +13,7 @@ AR = ar
 AR_OPT = rcs $@ $^
 endif
 
-ifneq (${BUILD_ON_WINDOWS), 1)
+ifneq (${BUILD_ON_WINDOWS}, 1)
 LDFLAGS += -Wl,--enable-auto-import -Wl,--export-all-symbols -Wl,--out-implib=lib${PRG}.dll.a
 endif
 
