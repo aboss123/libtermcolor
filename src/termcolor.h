@@ -51,4 +51,8 @@ int tcol_fprintf(FILE* stream, const char* fmt, ...);
 // Printfs the colorized format string to the standard output.
 int tcol_printf(const char* fmt, ...);
 
+
+// parses a termcolor color and puts result in dest
+int tcol_color_parse(char* dst, size_t dstn, char color[16],
+                     size_t k, size_t* len);
 #endif /* _LIBTERMCOLOR_TERMCOLOR_H */
