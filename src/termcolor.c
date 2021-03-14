@@ -37,15 +37,6 @@ void tcol_override_color_checks(bool enable_color) {
     use_color = enable_color;
 }
 
-enum _termcolor_internal_color {
-    _termcolor_internal_color_BOLD = 1 << 1,
-    _termcolor_internal_color_FANT = 1 << 2,
-    _termcolor_internal_color_STRK = 1 << 3,
-    _termcolor_internal_color_UNDR = 1 << 4,
-    _termcolor_internal_color_BLNK = 1 << 5,
-    _termcolor_internal_color_ITLC = 1 << 7
-};
-
 int _termcolor_internal_lookup(const char color_name) {
     switch (color_name) {
         case 'N': return 30;
