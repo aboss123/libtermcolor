@@ -129,6 +129,10 @@ int _tcol_color_generate(char* dst, size_t dstn, size_t* len,
 
 int tcol_color_parse(char* dst, size_t dstn, char color[16], size_t k,
                      size_t* len) {
+    if (!use_color) {
+        *len = 0;
+        return TermColorErrorNone;
+    }
 
     // '0' signifies no color, i.e. a reset
     if (*color == '0' && k == 1) {
