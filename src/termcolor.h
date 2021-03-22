@@ -31,7 +31,6 @@ enum term_color_error_t {
     TERM_COLOR_ERROR_COUNT
 };
 
-    _termcolor_internal_color_FANT = 1 << 2,
 // USE WITH CAUTION
 int _tcol_color_generate(char* dst, size_t dstn, size_t* len, int rep,
                          int foreground, int background);
