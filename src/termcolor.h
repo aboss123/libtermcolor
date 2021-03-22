@@ -33,10 +33,8 @@ enum term_color_error_t {
 };
 
 // USE WITH CAUTION
-enum _termcolor_internal_color;
-int _tcol_color_generate(char* dst, size_t dstn, size_t* len,
-                         enum _termcolor_internal_color rep, int foreground,
-                         int background);
+int _tcol_color_generate(char* dst, size_t dstn, size_t* len, int rep,
+                         int foreground, int background);
 
 // Returns a human-readable string describing the given libtermcolor error.
 const char* tcol_errorstr(const enum term_color_error_t err);

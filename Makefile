@@ -1,4 +1,4 @@
-CFLAGS   += -Isrc -fPIC
+CFLAGS   += -Isrc -fPIC -std=c99 -pedantic
 WARNINGS += -Wall -Wextra
 SRC      := $(wildcard src/*.c)
 OBJ      := ${SRC:.c=.o}

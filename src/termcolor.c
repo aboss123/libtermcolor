@@ -60,9 +60,8 @@ int _termcolor_internal_lookup(const char color_name) {
     }
 }
 
-int _tcol_color_generate(char* dst, size_t dstn, size_t* len,
-                         enum _termcolor_internal_color rep, int foreground,
-                         int background) {
+int _tcol_color_generate(char* dst, size_t dstn, size_t* len, int rep,
+                         int foreground, int background) {
     // Much of the code here was informed by the following gist:
     // https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
 
@@ -76,7 +75,7 @@ int _tcol_color_generate(char* dst, size_t dstn, size_t* len,
     } while (0)
 
     // Every escape code begans with "\e["
-    __APPEND('\e');
+    __APPEND('\033');
     __APPEND('[');
 
     // Add the appropriate parameters to our escape sequence depending on the
@@ -133,7 +132,7 @@ int tcol_color_parse(char* dst, size_t dstn, char color[16], size_t k,
     // '0' signifies no color, i.e. a reset
     if (*color == '0' && k == 1) {
         size_t j = 0;
-        __APPEND('\e');
+        __APPEND('\033');
         __APPEND('[');
         __APPEND('m');
         *len = j;
@@ -201,6 +200,7 @@ static inline int tcol_fmt_parse(char* dst, size_t dstn, const char* src,
     size_t j = 0;
     dstn--;
     for (size_t i = 0; i < srcn && j < dstn; i++) {
+        loop_top:
         // 2. We check if the current character is '{'.
         if (src[i] == '{') {
             // 3.B. If it is, we make sure it's not escaped with "{{".
@@ -217,6 +217,11 @@ static inline int tcol_fmt_parse(char* dst, size_t dstn, const char* src,
                     // Allow spaces in the color
                     if (src[i] == ' ') {
                         i++;
+                        if (src[i] == '}') {
+                            i++;
+                            // If the color is all spaces, ignore it.
+                            goto loop_top;
+                        }
                         continue;
                     }
 
