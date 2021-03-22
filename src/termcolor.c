@@ -51,6 +51,15 @@ int _termcolor_internal_lookup(const char color_name) {
     }
 }
 
+enum _termcolor_internal_color {
+    _termcolor_internal_color_BOLD = 1 << 1,
+    _termcolor_internal_color_FANT = 1 << 2,
+    _termcolor_internal_color_UNDR = 1 << 3,
+    _termcolor_internal_color_BLNK = 1 << 4,
+    _termcolor_internal_color_STRK = 1 << 5,
+    _termcolor_internal_color_ITLC = 1 << 6
+};
+
 int _tcol_color_generate(char* dst, size_t dstn, size_t* len, int rep,
                          int foreground, int background) {
     // Much of the code here was informed by the following gist:
