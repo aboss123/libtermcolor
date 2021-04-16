@@ -2,6 +2,8 @@
 
 Use the following character (sequences) and _only_ them within a left and right bracket to construct valid colors. The color buffer given to `tcol_color_parse` should _not_ have brackets, however. This is only for the format-to-stream functions.
 
+Termcolor format strings are a subset of standard printf format strings. This is because the use of squiggly brackets is overloaded. However, any printf format string can be converted into an equivalent termcolor format string by replacing all occurrences of `{` with `{{`.
+
 ### Foreground Colors
 
 Character | Name
