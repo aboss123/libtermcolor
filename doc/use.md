@@ -1,6 +1,6 @@
 # Usage
 
-Use the following character (sequences) and _only_ them within a left and right bracket to construct valid colors.
+Use the following character (sequences) and _only_ them within a left and right bracket to construct valid colors. The color buffer given to `tcol_color_parse` should _not_ have brackets, however. This is only for the format-to-stream functions.
 
 ### Foreground Colors
 

@@ -263,7 +263,8 @@ static inline int tcol_fmt_parse(char* dst, size_t dstn, const char* src,
     return TermColorErrorNone;
 }
 
-static int tcol_vfprintf(FILE* stream, const char* fmt, va_list ap) {
+static inline int tcol_vsnprintf(char* stream, size_t N, const char* fmt,
+                                 va_list ap) {
     // Gets the length of the format string and calculates a length for the new
     // format string to be created.
     const size_t l = strlen(fmt);
@@ -280,7 +281,36 @@ static int tcol_vfprintf(FILE* stream, const char* fmt, va_list ap) {
         return status;
     }
 
-    // printf("%s\n", buffer);
+    // Perform the snprintf itself.
+    if (vsnprintf(stream, N, buffer, ap) < 0) {
+        free(buffer);
+        return TermColorErrorPrintingFailed;
+    }
+
+    // Cleanup resources.
+    free(buffer);
+
+    return TermColorErrorNone;
+}
+
+// TODO: BAD! Remove this code duplication.
+
+static inline int tcol_vfprintf(FILE* stream, const char* fmt, va_list ap) {
+    // Gets the length of the format string and calculates a length for the new
+    // format string to be created.
+    const size_t l = strlen(fmt);
+    const size_t n = l * 2 + 16;
+
+    // Allocates and produces the new format string.
+    char* buffer = malloc(n);
+    if (buffer == NULL) {
+        return TermColorErrorAllocationFailed;
+    }
+    const int status = tcol_fmt_parse(buffer, n, fmt, l);
+    if (status != TermColorErrorNone) {
+        free(buffer);
+        return status;
+    }
 
     // Perform the printf itself.
     if (vfprintf(stream, buffer, ap) < 0) {
@@ -309,4 +339,12 @@ int tcol_printf(const char* fmt, ...) {
       const int status = tcol_vfprintf(stdout, fmt, ap);
       va_end(ap);
       return status;
+}
+// This is similar except it prints to a buffer
+int tcol_snprintf(char* stream, size_t N, const char* fmt, ...) {
+    va_list ap;
+    va_start(ap, fmt);
+    const int status = tcol_vsnprintf(stream, N, fmt, ap);
+    va_end(ap);
+    return status;
 }

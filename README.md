@@ -6,9 +6,9 @@
 - Italics and bold
 - Strikethrough, underline and blinking
 
-See [`use.md`](doc/use.md) for more information.
+Documentation is provided through comments in [the header file](include/termcolor.h). See [`use.md`](doc/use.md) for more information.
 
-The API provided is through these two functions:
+The main API provided is through these three functions:
 
 ```c
 int tcol_fprintf(FILE* stream, const char* fmt, ...);
