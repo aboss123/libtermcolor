@@ -34,12 +34,12 @@
 // the `tcol_fprintf` and `tcol_printf` functions. You may assume any nonzero
 // value is an error and use `tcol_errorstr` to display a diagnostic.
 enum term_color_error_t {
-  TermColorErrorNone = 0,
-  TermColorErrorAllocationFailed = 1,
-  TermColorErrorPrintingFailed = 2,
-  TermColorErrorInvalidColor = 3,
-  TermColorErrorUnterminatedColor = 4,
-  TERM_COLOR_ERROR_COUNT
+    TermColorErrorNone = 0,
+    TermColorErrorAllocationFailed = 1,
+    TermColorErrorPrintingFailed = 2,
+    TermColorErrorInvalidColor = 3,
+    TermColorErrorUnterminatedColor = 4,
+    TERM_COLOR_ERROR_COUNT
 };
 
 // Decodes the given termcolor representation of a color
@@ -59,11 +59,11 @@ enum term_color_error_t {
 // NOTE: This is private API exposed for developers. Those interested can read
 // the source (found in src/termcolor.c). The relevant parts are the enum
 // `_termcolor_internal_color` and the function `_termcolor_internal_lookup`.
-int _tcol_color_generate(char* dst, size_t dstn, size_t* len, int rep,
+int _tcol_color_generate(char *dst, size_t dstn, size_t *len, int rep,
                          int foreground, int background);
 
 // Returns a human-readable string describing the given libtermcolor error.
-const char* tcol_errorstr(const enum term_color_error_t err);
+const char *tcol_errorstr(const enum term_color_error_t err);
 
 // Parses a termcolor color string without the brackets.
 //
@@ -80,8 +80,8 @@ const char* tcol_errorstr(const enum term_color_error_t err);
 //
 // NOTE: color is not null-terminated as its length is given by k which shall be
 // between 1 and 16.
-int tcol_color_parse(char* dst, size_t dstn, char color[16],
-                     size_t k, size_t* len);
+int tcol_color_parse(char *dst, size_t dstn, char color[16],
+                     size_t k, size_t *len);
 
 // By default libtermcolor will use color. However this behavior can be manually
 // overridden using this function.
@@ -98,7 +98,7 @@ void tcol_override_color_checks(bool enable_color);
 //
 // Return Value:
 // - `int`: One of the values `enum term_color_error_t`
-int tcol_fprintf(FILE* stream, const char* fmt, ...);
+int tcol_fprintf(FILE *stream, const char *fmt, ...);
 
 // Printfs the colorized format string to the standard output.
 //
@@ -109,7 +109,7 @@ int tcol_fprintf(FILE* stream, const char* fmt, ...);
 //
 // Return Value:
 // - `int`: One of the values `enum term_color_error_t`
-int tcol_printf(const char* fmt, ...);
+int tcol_printf(const char *fmt, ...);
 
 // Snprintfs the colorized format string to the specified string stream.
 //
@@ -121,6 +121,6 @@ int tcol_printf(const char* fmt, ...);
 //
 // Return Value:
 // - `int`: One of the values `enum term_color_error_t`
-int tcol_snprintf(char* buffer, size_t N, const char* fmt, ...);
+int tcol_snprintf(char *buffer, size_t N, const char *fmt, ...);
 
 #endif /* _LIBTERMCOLOR_TERMCOLOR_H */
