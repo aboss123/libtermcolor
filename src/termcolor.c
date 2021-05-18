@@ -78,7 +78,7 @@ int _tcol_color_generate(char *dst, size_t dstn, size_t *len, int rep,
 
     // This macro checks to make sure we don't overrun the buffer when we add
     // a new character,
-#define __APPEND(c) do { \
+    #define __APPEND(c) do { \
         dst[j++] = (c); \
         if (j >= dstn) return TermColorErrorNone; \
     } while (0)
@@ -332,17 +332,17 @@ static inline int tcol_vfprintf(FILE *stream, const char *fmt, va_list ap) {
         free(buffer);
         return status;
     }
-#ifdef TERMCOLOR_OS_WIN
-    HANDLE output  = GetStdHandle(STD_OUTPUT_HANDLE); // Console Output
-    DWORD mode;
-    GetConsoleMode(output, &mode);
-    mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING; // Process ANSI Escape
-    mode |= ENABLE_PROCESSED_OUTPUT; // Process ASCII Escape
-    WINBOOL set = !SetConsoleMode(output, mode);
-    if (set) { // If we could not set the console mode, we cannot print it
-      return TermColorErrorPrintingFailed;
-    }
-#endif
+    #ifdef TERMCOLOR_OS_WIN
+        HANDLE output  = GetStdHandle(STD_OUTPUT_HANDLE); // Console Output
+        DWORD mode;
+        GetConsoleMode(output, &mode);
+        mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING; // Process ANSI Escape
+        mode |= ENABLE_PROCESSED_OUTPUT; // Process ASCII Escape
+        WINBOOL set = !SetConsoleMode(output, mode);
+        if (set) { // If we could not set the console mode, we cannot print it
+            return TermColorErrorPrintingFailed;
+        }
+    #endif
     // Perform the printf itself.
     if (vfprintf(stream, buffer, ap) < 0) {
         free(buffer);

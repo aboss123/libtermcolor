@@ -26,8 +26,8 @@
 #include <stdio.h>
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__) || defined(__WIN32) && !defined(__CYGWIN__)
-#define TERMCOLOR_OS_WIN
-#include <windows.h>
+    #define TERMCOLOR_OS_WIN
+    #include <windows.h>
 #endif
 
 // A type describing an termcolor error. These are the only values returned by
