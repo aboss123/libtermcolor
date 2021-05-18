@@ -25,16 +25,21 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__) || defined(__WIN32) && !defined(__CYGWIN__)
+#define TERMCOLOR_OS_WIN
+#include <windows.h>
+#endif
+
 // A type describing an termcolor error. These are the only values returned by
 // the `tcol_fprintf` and `tcol_printf` functions. You may assume any nonzero
 // value is an error and use `tcol_errorstr` to display a diagnostic.
 enum term_color_error_t {
-    TermColorErrorNone = 0,
-    TermColorErrorAllocationFailed = 1,
-    TermColorErrorPrintingFailed = 2,
-    TermColorErrorInvalidColor = 3,
-    TermColorErrorUnterminatedColor = 4,
-    TERM_COLOR_ERROR_COUNT
+  TermColorErrorNone = 0,
+  TermColorErrorAllocationFailed = 1,
+  TermColorErrorPrintingFailed = 2,
+  TermColorErrorInvalidColor = 3,
+  TermColorErrorUnterminatedColor = 4,
+  TERM_COLOR_ERROR_COUNT
 };
 
 // Decodes the given termcolor representation of a color
