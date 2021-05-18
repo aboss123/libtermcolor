@@ -315,7 +315,8 @@ static inline int tcol_vfprintf(FILE* stream, const char* fmt, va_list ap) {
   HANDLE output  = GetStdHandle(STD_OUTPUT_HANDLE); // Console Output
   DWORD mode;
   GetConsoleMode(output, &mode);
-  mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+  mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING; // Process ANSI Escape
+  mode |= ENABLE_PROCESSED_OUTPUT; // Process ASCII Escape
   WINBOOL set = !SetConsoleMode(output, mode);
   if (set) { // If we could not set the console mode, we cannot print it
     return TermColorErrorPrintingFailed;
